@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Forms;
-using System.Threading;
+
 
 public class flatfile
 {
@@ -34,6 +34,8 @@ public class flatfile
 		string todaysDate = DateTime.Now.ToString("yyMMdd");
 		return path + @"\" + todaysDate + ".txt";
 	}
+
+
 	private static void writeFlatFile (string inputFilename, string outputFilename)
 	{
 		string completeLine;
@@ -84,16 +86,13 @@ public class flatfile
 	private static string createUsername (string firstName, string lastName)
 	{
 		char firstLetterLowercase;
-		string username;
 
 		//create lowercase username
 		firstName = firstName.ToLower();
 		firstLetterLowercase = firstName[0];
-		lastName = lastName.ToLower();
 
-		username = firstLetterLowercase + lastName;
 
-		return username;
+		return firstLetterLowercase + lastName.ToLower();;
 	}
 
 
