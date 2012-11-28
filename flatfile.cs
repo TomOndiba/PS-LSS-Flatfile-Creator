@@ -6,16 +6,17 @@ using System.Threading;
 
 public class flatfile
 {
-
-
 	static void Main()
 	{
-		char firstLetterLowercase;
-		string lastNamelowercase, firstName, completeLine;
-		string inputFilename, outputFilename;
+		//Collect the input filename
+		string inputFilename = fileOpenPrompt ();
+		writeFlatFile (inputFilename, createOutputFilename(inputFilename));
 
+	}
+
+	private static string fileOpenPrompt ()
+	{
 		OpenFileDialog fileOpen = new OpenFileDialog ();
-			    
 
 		fileOpen.InitialDirectory = ".\\";
 		fileOpen.Filter = "Comma Delimited (*.csv)|*.csv|All files (*.*)|*.*";
@@ -24,13 +25,19 @@ public class flatfile
 		//                if (fileOpen.ShowDialog () == DialogResult.Cancel)
 		fileOpen.ShowDialog();
 
-		//Collect the input filename
-		inputFilename = fileOpen.FileName;
+		return fileOpen.FileName;
+	}
 
+	private static string createOutputFilename (string inputFilename)
+	{
 		string path = Path.GetDirectoryName(inputFilename);
 		string todaysDate = DateTime.Now.ToString("yyMMdd");
-		outputFilename = path + @"\" + todaysDate + ".txt";
-	
+		return path + @"\" + todaysDate + ".txt";
+	}
+	private static void writeFlatFile (string inputFilename, string outputFilename)
+	{
+		string completeLine;
+
 		//load all the lines of the file into memory
 		string[] lines = File.ReadAllLines(inputFilename);
 		using (var writer = new StreamWriter(outputFilename))
@@ -65,20 +72,29 @@ public class flatfile
 					completeLine += " ";
 				}
 				
-				//create lowercase username and add it to the end of the line
-				firstName = parts[1].ToLower();
-				firstLetterLowercase = firstName[0];
-				lastNamelowercase =parts[0].ToLower();
-				
-				completeLine += firstLetterLowercase + lastNamelowercase;
+				//Add username to the line
+				completeLine += createUsername (parts[1], parts[0]);
 				
 				System.Console.WriteLine(completeLine);
 				writer.WriteLine(completeLine);
 				
 			}
-
-
-
 		}
-		}
+	}
+	private static string createUsername (string firstName, string lastName)
+	{
+		char firstLetterLowercase;
+		string username;
+
+		//create lowercase username
+		firstName = firstName.ToLower();
+		firstLetterLowercase = firstName[0];
+		lastName = lastName.ToLower();
+
+		username = firstLetterLowercase + lastName;
+
+		return username;
+	}
+
+
 }
