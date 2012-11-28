@@ -8,17 +8,12 @@ public class flatfile
 {
 
 
-
-
-	static void Main(string[] args)
+	static void Main()
 	{
 		char firstLetterLowercase;
-		string lastNamelowercase;
-		string firstName;
-
-		string completeLine;
+		string lastNamelowercase, firstName, completeLine;
 		string inputFilename, outputFilename;
-	
+
 		OpenFileDialog fileOpen = new OpenFileDialog ();
 			    
 
@@ -32,8 +27,9 @@ public class flatfile
 		//Collect the input filename
 		inputFilename = fileOpen.FileName;
 
-		//Create the output filename
-		outputFilename = inputFilename.Remove(inputFilename.Length - 4) + ".txt";
+		string path = Path.GetDirectoryName(inputFilename);
+		string todaysDate = DateTime.Now.ToString("yyMMdd");
+		outputFilename = path + @"\" + todaysDate + ".txt";
 	
 		//load all the lines of the file into memory
 		string[] lines = File.ReadAllLines(inputFilename);
