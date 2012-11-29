@@ -6,6 +6,8 @@ using System.Windows.Forms;
 
 public class flatfile
 {
+
+
 	static void Main()
 	{
 		//Collect the input filename
@@ -36,9 +38,11 @@ public class flatfile
 	}
 
 
-	private static void writeFlatFile (string inputFilename, string outputFilename)
+	public static void writeFlatFile (string inputFilename, string outputFilename)
 	{
-		string completeLine;
+		int LAST_NAME_CHAR_COUNT = 50;
+		int FIRST_NAME_CHAR_COUNT = 18;
+		int EMAIL_CHAR_COUNT = 70;
 
 		//load all the lines of the file into memory
 		string[] lines = File.ReadAllLines(inputFilename);
@@ -50,39 +54,34 @@ public class flatfile
 				string[] parts = line.Split(',');
 				
 				//Add last name to the line
-				completeLine = parts[0];
-				
+				writer.Write(parts[0]);
 				//Add required amount of white space
-				for (int i = 1; i <= (50 -parts[0].Length); i++) {
-					completeLine += " ";
-				}
-				
+				writer.Write(addWhitespace(LAST_NAME_CHAR_COUNT, parts[0].Length));
+
+
 				//Add first name to the line
-				completeLine +=parts[1];
-				
-				//Add required amount of white space
-				for (int i = 1; i <= (18 - parts[1].Length); i++) {
-					completeLine += " ";
-				}
+				writer.Write(parts[1]);
+				writer.Write(addWhitespace(FIRST_NAME_CHAR_COUNT, parts[1].Length));
 				
 				//Add company and email address
-				completeLine += "GSS";
-				completeLine += parts[2];
-				
-				//Add required amount of white space
-				for (int i = 1; i <= (70 - parts[2].Length); i++) {
-					completeLine += " ";
-				}
+				writer.Write("GSS" + parts[2]);
+				writer.Write(addWhitespace(EMAIL_CHAR_COUNT, parts[2].Length));
 				
 				//Add username to the line
-				completeLine += createUsername (parts[1], parts[0]);
-				
-				System.Console.WriteLine(completeLine);
-				writer.WriteLine(completeLine);
+				writer.WriteLine(createUsername (parts[1], parts[0]));
 				
 			}
 		}
 	}
+	private static string addWhitespace (int limit, int stringLength)
+	{
+		string whitespace = "";
+		for (int i = 1; i <= (limit -stringLength); i++) {
+			whitespace+= " ";
+		}
+		return whitespace;
+	}
+
 	private static string createUsername (string firstName, string lastName)
 	{
 		char firstLetterLowercase;
